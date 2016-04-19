@@ -1,1 +1,1 @@
-# nauka2
+# Repozytorium nr 2 do nauki programowania
