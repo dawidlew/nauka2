@@ -18,6 +18,7 @@ try:
     if 3 <= args.high <= 24:
 
         print args.char.center(120)
+
         for i in range(args.high):
             j = (i * 3)
             print (j * args.char).center(120)
