@@ -22,7 +22,7 @@ def writer(high, directory):
     os.chdir(directory)
     file = open(str(args.high) + ".txt", "w")
     file.write(directory)
-    print >>file, choinka(high)
+    print >>str(args.high) + ".txt", choinka(high)
     file.close()
 
 def wyjatek(katalog):
