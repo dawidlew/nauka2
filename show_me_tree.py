@@ -18,14 +18,13 @@ parser.add_argument("--savetofile",type=str,
 
 args = parser.parse_args()
 
-def writer(high, directory):
+def writer(high, aaa):
     os.chdir(directory)
     file = open(str(args.high) + ".txt", "w")
     file.write(directory)
-    print >>str(args.high) + ".txt", choinka(high)
     file.close()
 
-def wyjatek(katalog):
+def exit(katalog):
     print "[ERROR] Problem with creating directory " + katalog
     sys.exit(3)
 
@@ -38,33 +37,21 @@ def choinka(high):
     print ('|').center(n)
     print ('^').center(n)
 
+# try:
+if 3 <= args.high <= 24:
+    if not args.savetofile:
+        directory = raw_input('Please input directory for output file > ')
+        writer(args.high, directory)
+    writer(args.high, args.savetofile)
 
+elif 0 <= args.high <= 2:
+    exit(directory)
+    sys.exit(1)
 
-if not args.savetofile:
-    try:
-        if 3 <= args.high <= 24:
-            directory = raw_input('Please input directory for output file > ')
-            writer(args.high, directory)
+elif args.high > 24:
+    exit(directory)
+    sys.exit(1)
+# except:
+#     # exit(directory)
+#     print "1"
 
-        elif 0 <= args.high <= 2:
-            sys.exit(1)
-
-        elif args.high > 24:
-            sys.exit(1)
-    except:
-        # wyjatek(directory)
-        print "1"
-else:
-    try:
-        if 3 <= args.high <= 24:
-            writer(args.high, args.savetofile)
-
-        elif 0 <= args.high <= 2:
-            sys.exit(1)
-
-        elif args.high > 24:
-            sys.exit(1)
-
-    except:
-        # wyjatek(args.savetofile)
-        print "2"
