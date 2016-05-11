@@ -12,35 +12,40 @@ parser.add_argument("--char", type=str,
                     default="'Brak symbolu!'",
                     required=True,
                     choices=("*", "@", "#", "o", "O", "0", "8"))
-parser.add_argument("--savetofile",type=str,
+parser.add_argument("--savetofile", type=str,
                     help="Path to the file",
                     required=False)
 
 args = parser.parse_args()
 
-def writer(aaa, bbb):
-    os.chdir(bbb)
+def writer(args, directory):
+    os.chdir(directory)
     file = open(str(args.high) + ".txt", "w")
-    file.write(bbb)
+    tree = choinka(args)
+    file.write(tree)
     file.close()
-    print choinka()
+    print tree
+
 
 def exit(wys):
-    print '[ERROR] Unexpected height: ' + wys
+    print '[ERROR] Unexpected height: ' + str(wys)
     sys.exit(3)
 
-def choinka():
+
+def choinka(args):
     n = 3 + (args.high * 2)
-    print args.char.center(n)
+    var = args.char.center(n) + "\n"
     for i in xrange(1, args.high):
         j = i * 2
-        print ((j + 1) * args.char).center(n)
-    print ('|').center(n)
-    print ('^').center(n)
+        var= var + ((j + 1) * args.char).center(n) + "\n"
+    var = var + ('|').center(n) + "\n"
+    var = var + ('^').center(n) + "\n"
+    return var
 
-def wysokosc(katalog):
+
+def wysokosc(katalog, args):
     if 3 <= args.high <= 24:
-        writer(args.high, katalog)
+        writer(args, katalog)
     elif 0 <= args.high <= 2:
         exit(args.high)
         sys.exit(1)
@@ -48,9 +53,17 @@ def wysokosc(katalog):
         exit(args.high)
         sys.exit(1)
 
+
+def diff(a,b):
+    return a-b
+
+assert 2 == diff(4, 2)
+
+a = {'char': '@'}
+print(a)
+
 if not args.savetofile:
     directory = raw_input('Please input directory for output file > ')
-    wysokosc(directory)
+    wysokosc(directory, args)
 else:
-    wysokosc(args.savetofile)
-
+    wysokosc(args.savetofile, args)
