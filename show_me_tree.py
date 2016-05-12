@@ -19,15 +19,17 @@ parser.add_argument("--savetofile", type=str,
 args = parser.parse_args()
 
 def writer(args, directory):
+    file_name = str(args.high) + ".txt"
     try:
         os.chdir(directory)
-        file = open(str(args.high) + ".txt", "w")
+        file_h = open(file_name, "w")
         tree = choinka(args)
-        file.write(tree)
-        file.close()
+        file_h.write(tree)
+        file_h.close()
         print tree
-    except IOError:
-        print 'Unable to write to file ' + directory + file
+    except (IOError, OSError):
+        print 'Unable to write to file ' + directory + file_name
+        sys.exit(4)
 
 def exit(wys):
     print '[ERROR] Unexpected height: ' + str(wys)
