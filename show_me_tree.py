@@ -57,15 +57,6 @@ def wysokosc(katalog, args):
         exit(args.high)
         sys.exit(1)
 
-
-# def diff(a,b):
-#     return a-b
-#
-# assert 2 == diff(4, 2)
-#
-# a = {'char': '@'}
-# print(a)
-
 if not args.savetofile:
     directory = raw_input('Please input directory for output file > ')
     wysokosc(directory, args)
