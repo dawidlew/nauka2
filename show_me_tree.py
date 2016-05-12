@@ -19,13 +19,15 @@ parser.add_argument("--savetofile", type=str,
 args = parser.parse_args()
 
 def writer(args, directory):
-    os.chdir(directory)
-    file = open(str(args.high) + ".txt", "w")
-    tree = choinka(args)
-    file.write(tree)
-    file.close()
-    print tree
-
+    try:
+        os.chdir(directory)
+        file = open(str(args.high) + ".txt", "w")
+        tree = choinka(args)
+        file.write(tree)
+        file.close()
+        print tree
+    except IOError:
+        print 'Unable to write to file ' + directory + file
 
 def exit(wys):
     print '[ERROR] Unexpected height: ' + str(wys)
@@ -54,13 +56,13 @@ def wysokosc(katalog, args):
         sys.exit(1)
 
 
-def diff(a,b):
-    return a-b
-
-assert 2 == diff(4, 2)
-
-a = {'char': '@'}
-print(a)
+# def diff(a,b):
+#     return a-b
+#
+# assert 2 == diff(4, 2)
+#
+# a = {'char': '@'}
+# print(a)
 
 if not args.savetofile:
     directory = raw_input('Please input directory for output file > ')
