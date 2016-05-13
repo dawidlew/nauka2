@@ -41,9 +41,9 @@ def choinka(args):
     var = args.char.center(n) + "\n"
     for i in xrange(1, args.high):
         j = i * 2
-        var= var + ((j + 1) * args.char).center(n) + "\n"
-    var = var + ('|').center(n) + "\n"
-    var = var + ('^').center(n) + "\n"
+        var= var + ((j + 1) * args.char).center(n) + os.linesep
+    var = var + ('|').center(n) + os.linesep
+    var = var + ('^').center(n) + os.linesep
     return var
 
 
