@@ -15,11 +15,13 @@ args = parser.parse_args()
 
 def stat(path, args):
     file_h = open(path, 'r')
-    c = collections.Counter()
+    text = file_h.read()
+    c = collections.Counter(text)
     for letter in string.printable:
         if c[letter] > 0:
             print '%s : %d' % (letter, c[letter])
     file_h.close()
+
 
 if not args.filepath:
     path = raw_input('Please input path and name of the file > ')
