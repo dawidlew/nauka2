@@ -1,3 +1,4 @@
+# coding=utf-8
 import argparse
 import collections
 import string
@@ -13,18 +14,19 @@ parser.add_argument("--filepath", type=str,
 
 args = parser.parse_args()
 
-def stat(path, args):
+def stat(path):
     file_h = open(path, 'r')
-    text = file_h.read()
-    c = collections.Counter(text)
+    c = collections.Counter(file_h.read())
     for letter in string.printable:
         if c[letter] > 0:
-            print '%s : %d' % (letter, c[letter])
-    file_h.close()
-
+            if letter not in string.whitespace:
+                # (lista i pózniej sortowanie i dopiero wyswietlenie- osobna funkcja i zwrot)
+                print ord(letter)
+                print '%s : %d' % (letter, c[letter])
+            file_h.close()
 
 if not args.filepath:
     path = raw_input('Please input path and name of the file > ')
-    stat(path, args)
+    stat(path)
 else:
-    stat(args.filepath, args)
+    stat(args.filepath)
