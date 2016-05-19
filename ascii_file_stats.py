@@ -14,19 +14,24 @@ parser.add_argument("--filepath", type=str,
 
 args = parser.parse_args()
 
-def stat(path):
+def file(path):
     file_h = open(path, 'r')
-    c = collections.Counter(file_h.read())
+    col = collections.Counter(file_h.read())
+    file_h.close()
+    stat(col)
+
+def stat(col):
     for letter in string.printable:
-        if c[letter] > 0:
+        if col[letter] > 0:
             if letter not in string.whitespace:
-                # (lista i pózniej sortowanie i dopiero wyswietlenie- osobna funkcja i zwrot)
+                # (lista i pózniej sortowanie i dopiero wyswietlenie- osobna funkcja i zwrot) + osobna funkcja na czytanie pliku- rozdzielić to na na więcej
+
                 print ord(letter)
-                print '%s : %d' % (letter, c[letter])
-            file_h.close()
+                print '%s : %d' % (letter, col[letter])
+
 
 if not args.filepath:
     path = raw_input('Please input path and name of the file > ')
-    stat(path)
+    file(path)
 else:
-    stat(args.filepath)
+    file(args.filepath)
