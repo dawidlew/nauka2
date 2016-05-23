@@ -2,36 +2,48 @@
 import argparse
 import collections
 import string
+import os
 
-parser = argparse.ArgumentParser()
 
-parser.add_argument("--sort", type=str,
-                    help="How to sort the characters?",
-                    required=False)
-parser.add_argument("--filepath", type=str,
-                    help="Path to the file",
-                    required=False)
-
-args = parser.parse_args()
-
-def file(path):
+def read_file_content(path):
     file_h = open(path, 'r')
-    col = collections.Counter(file_h.read())
+    content = file_h.read()
     file_h.close()
-    stat(col)
+    return content
 
-def stat(col):
+def stat(content):
+    results = []
+    col = collections.Counter(content)
     for letter in string.printable:
         if col[letter] > 0:
             if letter not in string.whitespace:
-                # (lista i pózniej sortowanie i dopiero wyswietlenie- osobna funkcja i zwrot) + osobna funkcja na czytanie pliku- rozdzielić to na na więcej
+                print '%s : %d, %d' % (letter, col[letter], ord(letter))
 
-                print ord(letter)
-                print '%s : %d' % (letter, col[letter])
+                results.extend([letter, col[letter], ord(letter), os.linesep])
+
+                results.sort()
+            print results
 
 
-if not args.filepath:
-    path = raw_input('Please input path and name of the file > ')
-    file(path)
-else:
-    file(args.filepath)
+
+
+def process(path):
+    content = read_file_content(path)
+    #content = read_from_url(path)
+    stat(content)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--sort", type=str,
+                        help="How to sort the characters?",
+                        required=False)
+    parser.add_argument("--filepath", type=str,
+                        help="Path to the file",
+                        required=False)
+    args = parser.parse_args()
+
+    path = args.filepath
+    if path is None:
+        path = raw_input('Please input path and name of the file > ')
+    process(path)
