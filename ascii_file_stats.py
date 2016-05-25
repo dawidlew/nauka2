@@ -3,6 +3,8 @@ import argparse
 import collections
 import string
 import os
+import sys
+
 
 
 def read_file_content(path):
@@ -22,21 +24,26 @@ def stat(content):
     return results
 
 
-
 def process(path):
     content = read_file_content(path)
-    #content = read_from_url(path)
-    v = stat(content)
-    b = sorted(v.items())
-    v = collections.OrderedDict(b)
-    print str(v)
-    print str(v.items())
-    for key, val in v.items():
+    stats_results = stat(content)
+    sorted_dict = sorted(stats_results.items())
+    ascii_sorted_dict = collections.OrderedDict(sorted_dict)
+    print str(ascii_sorted_dict)
+    print str(stats_results.items())
+    for key, val in ascii_sorted_dict.items():
         print str(chr(key)) + ': ' + str(val)
 
 
-    # for el in v:
-    #     print str(chr(el)) + ': ' + str(d[el])
+def size(path):
+    f_size = os.path.getsize(path)
+    if 0 < f_size <=100000:
+        process(path)
+    else:
+        print "File is too big. Try with another file."
+        sys.exit(5)
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -52,4 +59,4 @@ if __name__ == "__main__":
     path = args.filepath
     if path is None:
         path = raw_input('Please input path and name of the file > ')
-    process(path)
+    size(path)
