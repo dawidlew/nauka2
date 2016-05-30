@@ -47,6 +47,9 @@ def process(path):
 def validate_by_size(path):
     return 0 < os.path.getsize(path) <= 102400
 
+def validate_by_type(path):
+    return mimetypes.guess_type(path)[0] == 'text/plain'
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -64,7 +67,7 @@ if __name__ == "__main__":
         path = raw_input('Please input path and name of the file > ')
 
     if validate_by_size(path):
-        if mimetypes.guess_type('/cygdrive/c/moje/aaa/git_nauka/nauka2/pliki_testowe_stat/test1.txt')[0] == 'text/plain':
+        if validate_by_type(path):
             process(path)
         else:
             print "The file isn't a text file. Please give a text file."
