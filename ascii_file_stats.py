@@ -4,6 +4,7 @@ import collections
 import string
 import os
 import sys
+import mimetypes
 
 
 
@@ -29,20 +30,22 @@ def process(path):
     stats_results = stat(content)
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
-    print str(ascii_sorted_dict)
-    print str(stats_results.items())
-    for key, val in ascii_sorted_dict.items():
-        print str(chr(key)) + ': ' + str(val)
+    # print str(ascii_sorted_dict)
+    # print str(stats_results.items())
 
-
-def size(path):
-    f_size = os.path.getsize(path)
-    if 0 < f_size <=100000:
-        process(path)
+    if len(ascii_sorted_dict) <= 23:
+        for key, val in ascii_sorted_dict.items():
+            character = str(chr(key)) + ': ' + str(val)
+            print character
     else:
-        print "File is too big. Try with another file."
-        sys.exit(5)
+        print 'Dictionary lenght is ' + str(len(ascii_sorted_dict))
+        for key, val in ascii_sorted_dict.items():
+            character = str(chr(key)) + ': ' + str(val)
+            print '{:<10}{:<10}{:<}'.format(character, character, character)
 
+
+def validate_by_size(path):
+    return 0 < os.path.getsize(path) <= 102400
 
 
 if __name__ == "__main__":
@@ -59,4 +62,14 @@ if __name__ == "__main__":
     path = args.filepath
     if path is None:
         path = raw_input('Please input path and name of the file > ')
-    size(path)
+
+    if validate_by_size(path):
+        if mimetypes.guess_type('/cygdrive/c/moje/aaa/git_nauka/nauka2/pliki_testowe_stat/test1.txt')[0] == 'text/plain':
+            process(path)
+        else:
+            print "The file isn't a text file. Please give a text file."
+            sys.exit(6)
+    else:
+        print "File' size isn't proper (0.1-102kb). Try with another file."
+        sys.exit(5)
+
