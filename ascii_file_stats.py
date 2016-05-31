@@ -6,7 +6,7 @@ import os
 import sys
 import mimetypes
 
-
+TV_rows = 23
 
 def read_file_content(path):
     file_h = open(path, 'r')
@@ -30,18 +30,13 @@ def process(path):
     stats_results = stat(content)
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
-    # print str(ascii_sorted_dict)
-    # print str(stats_results.items())
 
-    if len(ascii_sorted_dict) <= 23:
-        for key, val in ascii_sorted_dict.items():
-            character = str(chr(key)) + ': ' + str(val)
-            print character
-    else:
-        print 'Dictionary lenght is ' + str(len(ascii_sorted_dict))
+    len_d = len(ascii_sorted_dict)
+    while len_d <= TV_rows:
         for key, val in ascii_sorted_dict.items():
             character = str(chr(key)) + ': ' + str(val)
             print '{:<10}{:<10}{:<}'.format(character, character, character)
+        len_d = len_d + 1
 
 
 def validate_by_size(path):
