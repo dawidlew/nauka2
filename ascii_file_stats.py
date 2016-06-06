@@ -5,8 +5,10 @@ import string
 import os
 import sys
 import mimetypes
+import math
 
-TV_rows = 23
+ROWS_COUNT = 23
+
 
 def read_file_content(path):
     file_h = open(path, 'r')
@@ -31,13 +33,44 @@ def process(path):
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
 
-    len_d = len(ascii_sorted_dict)
-    while len_d <= TV_rows:
-        for key, val in ascii_sorted_dict.items():
-            character = str(chr(key)) + ': ' + str(val)
-            print '{:<10}{:<10}{:<}'.format(character, character, character)
-        len_d = len_d + 1
+    dict_len = len(ascii_sorted_dict)
+    cols_count = dict_len / (ROWS_COUNT * 1.0)
+    cols_cnt = int(myround(cols_count))
 
+    print "cols_cnt: %d" % cols_cnt
+    print 'ROWS_COUNT: %d' % ROWS_COUNT
+
+    collection = ascii_sorted_dict.items()
+    print 'collection: %s' % collection
+
+    print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
+
+
+def print_sorted_list(data, rows=0, columns=0):
+    if rows:
+        lines = {}
+        for count, item in enumerate(data):
+            lines.setdefault(count % rows, []).append(item)
+        for key, value in lines.items():
+            for item in value:
+                print '{:<15}'.format(item),
+            print
+    elif columns:
+        for count, item in enumerate(data, 1):
+            print item,
+            if count % columns == 0:
+                print
+    else:
+        print data
+
+    #             for key, val in collection:
+    #                 print '{:<10}'.format(str(chr(key)) + ': ' + str(val))
+
+
+
+
+def myround(value):
+   return int(math.ceil(value))
 
 def validate_by_size(path):
     return 0 < os.path.getsize(path) <= 102400
