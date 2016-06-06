@@ -37,13 +37,15 @@ def process(path):
     cols_count = dict_len / (ROWS_COUNT * 1.0)
     cols_cnt = int(myround(cols_count))
 
-    print "cols_cnt: %d" % cols_cnt
-    print 'ROWS_COUNT: %d' % ROWS_COUNT
+    # print "cols_cnt: %d" % cols_cnt
+    # print 'ROWS_COUNT: %d' % ROWS_COUNT
 
     collection = ascii_sorted_dict.items()
-    print 'collection: %s' % collection
+    # print 'collection: %s' % collection
 
     print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
+
+# Poniższa funkcja drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif- kod mozna kiedyś uproscić
 
 
 def print_sorted_list(data, rows=0, columns=0):
@@ -53,7 +55,7 @@ def print_sorted_list(data, rows=0, columns=0):
             lines.setdefault(count % rows, []).append(item)
         for key, value in lines.items():
             for item in value:
-                print '{:<15}'.format(item),
+                print '{}: {:<15}'.format(chr(item[0]), item[1]),
             print
     elif columns:
         for count, item in enumerate(data, 1):
