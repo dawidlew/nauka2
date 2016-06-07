@@ -29,12 +29,21 @@ def stat(content):
 def prepare_list(path):
     content = read_file_content(path)
     stats_results = stat(content)
+
     if args.sort == 'freq':
         print 'bla'
-        sorted_dict = sorted(stats_results.items())
-        print 'sorted_dict: %s' % sorted_dict
-        ascii_sorted_dict = collections.OrderedDict(sorted_dict)
-s
+        sorted_dict_2 = sorted(stats_results.items(), key=lambda item: item[1])
+        ascii_sorted_dict = collections.OrderedDict(sorted_dict_2)
+
+        dict_len = len(ascii_sorted_dict)
+        cols_count = dict_len / (ROWS_COUNT * 1.0)
+        cols_cnt = int(myround(cols_count))
+
+        collection = ascii_sorted_dict.items()
+        print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
+
+
+
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
 
