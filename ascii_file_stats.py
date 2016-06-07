@@ -27,7 +27,7 @@ def stat(content):
     return results
 
 
-def process(path):
+def prepare_list(path):
     content = read_file_content(path)
     stats_results = stat(content)
     sorted_dict = sorted(stats_results.items())
@@ -65,9 +65,6 @@ def print_sorted_list(data, rows=0, columns=0):
     else:
         print data
 
-    #             for key, val in collection:
-    #                 print '{:<10}'.format(str(chr(key)) + ': ' + str(val))
-
 
 
 
@@ -98,7 +95,7 @@ if __name__ == "__main__":
 
     if validate_by_size(path):
         if validate_by_type(path):
-            process(path)
+            prepare_list(path)
         else:
             print "The file isn't a text file. Please give a text file."
             sys.exit(6)
