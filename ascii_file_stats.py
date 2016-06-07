@@ -22,7 +22,6 @@ def stat(content):
     for letter in string.printable:
         if col[letter] > 0:
             if letter not in string.whitespace:
-                # print '%s : %d, %d' % (letter, col[letter], ord(letter))
                 results[ord(letter)] = col[letter]
     return results
 
@@ -30,6 +29,12 @@ def stat(content):
 def prepare_list(path):
     content = read_file_content(path)
     stats_results = stat(content)
+    if args.sort == 'freq':
+        print 'bla'
+        sorted_dict = sorted(stats_results.items())
+        print 'sorted_dict: %s' % sorted_dict
+        ascii_sorted_dict = collections.OrderedDict(sorted_dict)
+s
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
 
@@ -37,12 +42,7 @@ def prepare_list(path):
     cols_count = dict_len / (ROWS_COUNT * 1.0)
     cols_cnt = int(myround(cols_count))
 
-    # print "cols_cnt: %d" % cols_cnt
-    # print 'ROWS_COUNT: %d' % ROWS_COUNT
-
     collection = ascii_sorted_dict.items()
-    # print 'collection: %s' % collection
-
     print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
 
 # Poniższa funkcja drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif- kod mozna kiedyś uproscić
