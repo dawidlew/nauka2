@@ -7,6 +7,10 @@ import sys
 import mimetypes
 import math
 
+import re
+from collections import Counter
+
+
 ROWS_COUNT = 23
 
 
@@ -26,10 +30,17 @@ def stat(content):
     return results
 
 
+
+
+def prepare_list_words():
+    content = read_file_content(path)
+    words = re.findall(r'\S+', content)
+    print (Counter(words))
+
+
 def prepare_list(path):
     content = read_file_content(path)
     stats_results = stat(content)
-
 
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
@@ -47,8 +58,8 @@ def prepare_list_sort():
     content = read_file_content(path)
     stats_results = stat(content)
 
-    sorted_dict_2 = sorted(stats_results.items(), key=lambda item: item[1])
-    ascii_sorted_dict = collections.OrderedDict(sorted_dict_2)
+    sorted_dict = sorted(stats_results.items(), key=lambda item: item[1])
+    ascii_sorted_dict = collections.OrderedDict(sorted_dict)
 
     dict_len = len(ascii_sorted_dict)
     cols_count = dict_len / (ROWS_COUNT * 1.0)
@@ -61,7 +72,7 @@ def prepare_list_sort():
 
 
 
-# Poniższa funkcja drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif- kod mozna kiedyś uproscić
+# Poniższa funkcja print_sorted_list drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif columns- kod mozna kiedyś uproscić
 
 
 def print_sorted_list(data, rows=0, columns=0):
@@ -100,6 +111,9 @@ if __name__ == "__main__":
     parser.add_argument("--sort", type=str,
                         help="How to sort the characters?",
                         required=False)
+    parser.add_argument("--words", type=str,
+                        help="How many words are it?",
+                        required=False)
     parser.add_argument("--filepath", type=str,
                         help="Path to the file",
                         required=False)
@@ -112,7 +126,10 @@ if __name__ == "__main__":
     if validate_by_size(path):
         if validate_by_type(path):
             if args.sort == 'freq':
-                prepare_list_sort()
+                if args.words == 'count':
+                    prepare_list_words()
+                else:
+                    prepare_list_sort()
             else:
                 prepare_list(path)
         else:
