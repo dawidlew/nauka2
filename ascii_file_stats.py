@@ -30,19 +30,6 @@ def prepare_list(path):
     content = read_file_content(path)
     stats_results = stat(content)
 
-    if args.sort == 'freq':
-        print 'bla'
-        sorted_dict_2 = sorted(stats_results.items(), key=lambda item: item[1])
-        ascii_sorted_dict = collections.OrderedDict(sorted_dict_2)
-
-        dict_len = len(ascii_sorted_dict)
-        cols_count = dict_len / (ROWS_COUNT * 1.0)
-        cols_cnt = int(myround(cols_count))
-
-        collection = ascii_sorted_dict.items()
-        print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
-
-
 
     sorted_dict = sorted(stats_results.items())
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
@@ -53,6 +40,26 @@ def prepare_list(path):
 
     collection = ascii_sorted_dict.items()
     print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
+
+
+
+def prepare_list_sort():
+    content = read_file_content(path)
+    stats_results = stat(content)
+
+    sorted_dict_2 = sorted(stats_results.items(), key=lambda item: item[1])
+    ascii_sorted_dict = collections.OrderedDict(sorted_dict_2)
+
+    dict_len = len(ascii_sorted_dict)
+    cols_count = dict_len / (ROWS_COUNT * 1.0)
+    cols_cnt = int(myround(cols_count))
+
+    collection = ascii_sorted_dict.items()
+    print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
+
+
+
+
 
 # Poniższa funkcja drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif- kod mozna kiedyś uproscić
 
@@ -104,7 +111,10 @@ if __name__ == "__main__":
 
     if validate_by_size(path):
         if validate_by_type(path):
-            prepare_list(path)
+            if args.sort == 'freq':
+                prepare_list_sort()
+            else:
+                prepare_list(path)
         else:
             print "The file isn't a text file. Please give a text file."
             sys.exit(6)
