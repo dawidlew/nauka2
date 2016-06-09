@@ -31,34 +31,27 @@ def stat(content):
 
 
 
-
-def prepare_list_words():
+def prepare_list_words(path):
     content = read_file_content(path)
     words = re.findall(r'\S+', content)
-    print (Counter(words))
+    wc = Counter(words)
+    # print (Counter(words))
+    # print str(wc.items())
+    for word, count in wc.items():
+        print '{:<15}: {:}'.format(str(word), str(count))
 
 
-def prepare_list(path):
+
+
+def prepare_list(path, sort_by_freq=False):
     content = read_file_content(path)
     stats_results = stat(content)
 
-    sorted_dict = sorted(stats_results.items())
-    ascii_sorted_dict = collections.OrderedDict(sorted_dict)
+    if sort_by_freq:
+        sorted_dict = sorted(stats_results.items(), key=lambda item: item[1])
+    else:
+        sorted_dict = sorted(stats_results.items())
 
-    dict_len = len(ascii_sorted_dict)
-    cols_count = dict_len / (ROWS_COUNT * 1.0)
-    cols_cnt = int(myround(cols_count))
-
-    collection = ascii_sorted_dict.items()
-    print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
-
-
-
-def prepare_list_sort():
-    content = read_file_content(path)
-    stats_results = stat(content)
-
-    sorted_dict = sorted(stats_results.items(), key=lambda item: item[1])
     ascii_sorted_dict = collections.OrderedDict(sorted_dict)
 
     dict_len = len(ascii_sorted_dict)
@@ -109,10 +102,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--sort", type=str,
-                        help="How to sort the characters?",
+                        help="How to sort the characters? [freq]",
                         required=False)
     parser.add_argument("--words", type=str,
-                        help="How many words are it?",
+                        help="How many words are it? [count]",
                         required=False)
     parser.add_argument("--filepath", type=str,
                         help="Path to the file",
@@ -126,10 +119,9 @@ if __name__ == "__main__":
     if validate_by_size(path):
         if validate_by_type(path):
             if args.sort == 'freq':
-                if args.words == 'count':
-                    prepare_list_words()
-                else:
-                    prepare_list_sort()
+                prepare_list(path, True)
+            elif args.words == 'count':
+                prepare_list_words(path)
             else:
                 prepare_list(path)
         else:
@@ -138,4 +130,3 @@ if __name__ == "__main__":
     else:
         print "File' size isn't proper (0.1-102kb). Try with another file."
         sys.exit(5)
-
