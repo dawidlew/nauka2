@@ -6,9 +6,8 @@ import os
 import sys
 import mimetypes
 import math
-
 import re
-from collections import Counter
+
 
 
 ROWS_COUNT = 23
@@ -34,7 +33,7 @@ def stat(content):
 def prepare_list_words(path):
     content = read_file_content(path)
     words = re.findall(r'\S+', content)
-    wc = Counter(words)
+    wc = collections.Counter(words)
     # print (Counter(words))
     # print str(wc.items())
     for word, count in wc.items():
@@ -48,7 +47,7 @@ def prepare_list(path, sort_by_freq=False):
     stats_results = stat(content)
 
     if sort_by_freq:
-        sorted_dict = sorted(stats_results.items(), key=lambda item: item[1])
+        sorted_dict = sorted(stats_results.items(), key=lambda item: item[1], reverse=True)
     else:
         sorted_dict = sorted(stats_results.items())
 
