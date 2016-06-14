@@ -75,6 +75,10 @@ def prepare_list(path, sort_by_freq=False):
     print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
 
 
+
+    
+
+
 # Poniższa funkcja print_sorted_list drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif columns- kod mozna kiedyś uproscić
 
 
