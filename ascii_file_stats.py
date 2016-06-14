@@ -30,17 +30,31 @@ def stat(content):
 
 
 
-def prepare_list_words(path):
-    content = read_file_content(path)
-    words = re.findall(r'\S+', content)
-    wc = collections.Counter(words)
-    # print (Counter(words))
-    # print str(wc.items())
-    for word, count in wc.items():
-        print '{:<15}: {:}'.format(str(word), str(count))
+def prepare_list_words(path, rows=ROWS_COUNT):
+    if rows:
+        content = read_file_content(path)
+        words = re.findall(r'\S+', content)
+        wc = collections.Counter(words)
+
+        print_sorted_list_words(wc.items(), rows=ROWS_COUNT, columns=0)
 
 
-
+def print_sorted_list_words(data, rows=0, columns=0):
+    if rows:
+        lines = {}
+        for count, item in enumerate(data):
+            lines.setdefault(count % rows, []).append(item)
+        for key, value in lines.items():
+            for item in value:
+                print '{:<15}: {:}'.format((item[0]), item[1]),
+            print
+    elif columns:
+        for count, item in enumerate(data, 1):
+            print item,
+            if count % columns == 0:
+                print
+    else:
+        print data
 
 def prepare_list(path, sort_by_freq=False):
     content = read_file_content(path)
@@ -59,9 +73,6 @@ def prepare_list(path, sort_by_freq=False):
 
     collection = ascii_sorted_dict.items()
     print_sorted_list(collection, rows=ROWS_COUNT, columns=cols_cnt)
-
-
-
 
 
 # Poniższa funkcja print_sorted_list drukuje rekordy wierszami, więc nie potrzebne jest wyliczanie liczby kolumn i elif columns- kod mozna kiedyś uproscić
@@ -83,7 +94,6 @@ def print_sorted_list(data, rows=0, columns=0):
                 print
     else:
         print data
-
 
 
 
