@@ -40,6 +40,8 @@ def prepare_list_words(path, rows=ROWS_COUNT):
 
 
 
+
+
 def prepare_list(path, sort_by_freq=False):
     content = read_file_content(path)
     stats_results = stat(content)
