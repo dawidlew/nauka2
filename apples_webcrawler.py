@@ -4,41 +4,39 @@ res = requests.get('http://www.sadbiznes.pl/notowania-jablek/7')
 text = bs4.BeautifulSoup(res.text, "html.parser")
 
 
-var0 = "td"
-var1 = "views-field views-field-changed"
-var2 = "for_day"
+def get_column_data(data_selector, class_value_selector):
+    results=[]
+    for i in text.find_all(data_selector, class_=class_value_selector):
+        results.append(i.string.strip())
+    return results
 
 
-dict1 = {var2: [], "name": [], "note_day": [], "city": [], "price_min": [], "price_max": []}
+col_dict = {
+    "for_day": [],
+    "name": [],
+    "note_day": [],
+    "city": [],
+    "price_min": [],
+    "price_max": []
+}
 
-for i in text.find_all(var0, class_=var1):
-    dict1[var2].append(i.string.strip())
+selector_info = {
+    "for_day":["td", "views-field views-field-changed"],
+    "name": ["td", "views-field views-field-tid-3"],
+    "note_day": ["span", "date-display-single"],
+    "city": ["td", "views-field views-field-tid"],
+    "price_min": ["td", "views-field views-field-field-cena-min-value"],
+    "price_max": ["td", "views-field views-field-field-cena-max-value"]
+}
 
-for i in text.find_all('td', class_="views-field views-field-tid-3"):
-    dict1["name"].append(i.string.strip())
-for i in text.find_all('span', class_="date-display-single"):
-    dict1["note_day"].append(i.string.strip())
-for i in text.find_all('td', class_="views-field views-field-tid"):
-    dict1["city"].append(i.string.strip())
-for i in text.find_all('td', class_="views-field views-field-field-cena-min-value"):
-    dict1["price_min"].append(i.string.strip())
-for i in text.find_all('td', class_="views-field views-field-field-cena-max-value"):
-    dict1["price_max"].append(i.string.strip())
+for i in col_dict:
+    s = 0
+    for selector in selector_info:
+        col_dict[i] = get_column_data(selector_info.items()[s][1][0], selector_info.items()[s][1][1])
+        s = s + 1
 
-
-print dict1
-
-assert len(dict1["for_day"]) == len(dict1["name"])
-assert len(dict1["note_day"]) == len(dict1["name"])
+print col_dict
 
 
-
-# bla1 = text.select('td.views-field.views-field-tid-3')
-# print 'bla1: %s' % bla1
-#
-# bla2 = text.find_all('td', class_="views-field views-field-changed")
-# print 'bla2: %s' % bla2
-
-# bla3 = text.html.head.title.string
-# print 'bla3: %s' % bla3
-
+print selector_info.items()[0][1][0]
+print selector_info.items()[0][1][1]
