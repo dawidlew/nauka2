@@ -1,6 +1,7 @@
 # coding=utf-8
 import requests, bs4
 import pprint
+import sqlite3
 
 res = requests.get('http://www.sadbiznes.pl/notowania-jablek/7')
 text = bs4.BeautifulSoup(res.text, "html.parser")
@@ -10,6 +11,7 @@ def get_column_data(data_selector, class_value_selector):
     for i in text.find_all(data_selector, class_=class_value_selector):
         results.append(i.string.strip())
     return results
+
 
 selector_info = {
     "for_day":["td", "views-field views-field-changed"],
@@ -25,4 +27,32 @@ col_dict = {}
 for key_name, (selector_first, selector_second) in selector_info.iteritems():
     col_dict[key_name] = get_column_data(selector_first, selector_second)
 
-pprint.pprint(col_dict)
+# pprint.pprint(col_dict)
+
+
+conn = sqlite3.connect('apples_webcrawler.db')
+c = conn.cursor()
+
+# c.execute("drop table note")
+# c.execute("create table note (for_day, name, note_day, city, price_min, price_max)")
+
+
+for key_name, (selector_first, selector_second) in selector_info.iteritems():
+    c.execute('insert into note(x) values (?)', key_name, get_column_data(selector_first, selector_second))
+
+
+# wypelniamy tabele kolumnami, iterujemy po nazwach z selector
+
+c.execute("select * from note")
+
+print c.fetchone()
+
+
+
+
+
+
+
+
+
+
