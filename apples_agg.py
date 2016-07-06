@@ -24,6 +24,7 @@ stmt = "insert into note_agg(name, city, avg_price_min, avg_price_max, timestamp
 cursor.executemany(stmt, avg_price_data)
 conn.commit()
 
+
 results = cursor.execute("select name, city, avg_price_min, avg_price_max, timestamp from note_agg")
 # print(str(results.fetchall()))
 
