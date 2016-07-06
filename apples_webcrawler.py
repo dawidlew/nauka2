@@ -13,6 +13,7 @@ def get_column_data(data_selector, class_value_selector):
         results.append(i.string.strip())
     return results
 
+
 def pivot_data(col_dict, timestamp=time.time()):
   output = []
 

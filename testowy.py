@@ -1,41 +1,31 @@
+# coding=utf-8
+import time
+import sqlite3
+
+conn = sqlite3.connect('apples_webcrawler.db')
+cursor = conn.cursor()
+timestamp = time.time()
+print int(timestamp)
+
+
+avg_price = cursor.execute(
+    "select DISTINCT name, city, round(avg(replace(price_min, ',', '.')),2), "
+    "round(avg(replace(price_max, ',', '.')),2) from note "
+    "where for_day in (select DISTINCT for_day from note order by for_day desc limit 10) "
+    "group by name, city")
+avg_price_data = avg_price.fetchall()
+
+print avg_price_data
 
 
 
 
+avg_price_1 = cursor.execute(
+    "select DISTINCT for_day from note order by for_day desc limit 10")
+avg_price_data_1 = avg_price_1.fetchall()
 
-
-def show_item(word_or_char, count, is_word):
-    if word:
-        formant = '{:<15}: {:}'
-    else:
-        formant = '{}: {:<15}'
-    print formant.format(chr(word_or_char), count)
+print avg_price_data_1
 
 
 
-
-
-
-
-
-    def print_sorted_list(data, rows=0, columns=0, print_solution=False):
-        if rows:
-            lines = {}
-            for count, item in enumerate(data):
-                lines.setdefault(count % rows, []).append(item)
-            for key, value in lines.items():
-                for item in value:
-                    if print_solution:
-                        print '{:<15}: {:}'.format((item[0]), item[1]),
-                    else:
-                        print '{}: {:<15}'.format(chr(item[0]), item[1]),
-                print
-
-    elif columns:
-    for count, item in enumerate(data, 1):
-        print item,
-        if count % columns == 0:
-            print
-
-else:
-print data
+cursor.close()

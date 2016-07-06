@@ -4,34 +4,26 @@ import sqlite3
 
 conn = sqlite3.connect('apples_webcrawler.db')
 cursor = conn.cursor()
+timestamp = int(time.time())
+print timestamp
 
 # cursor.execute("drop table note_agg")
-# cursor.execute("create table note_agg (name, city, avg_price_min, avg_price_max, timestamp)"
+# cursor.execute("create table note_agg (name, city, avg_price_min, avg_price_max)")
 
-avg_price_data = cursor.execute("select city, name, avg(price_min) as avg_price_min, avg(price_max) as avg_price_max" +
-                                " from note group by city, name order by timestamp limit 10")
-print(str(avg_price_data.fetchall()))
+avg_price = cursor.execute("select DISTINCT name, city, round(avg(replace(price_min, ',', '.')),2), "
+                           "round(avg(replace(price_max, ',', '.')),2) from note "
+                           "where for_day in (select DISTINCT for_day from note order by for_day desc limit 10) "
+                           "group by name, city")
+avg_price_data = avg_price.fetchall()
 
+# print avg_price_data[1]
+# print avg_price_data[1][0]
 
-timestamp = time.time()
-
-for values in (str(avg_price_data.fetchall())):
-    cursor.execute('INSERT INTO note_agg (city, name, avg_price_min, avg_price_max) ' +
-                   'VALUES (:city, :name, :avg_price_min, :avg_price_max)', (str(avg_price_data.fetchall())))
-
+stmt = "insert into note_agg(name, city, avg_price_min, avg_price_max) VALUES(?, ?, ?, ?)"
+cursor.executemany(stmt, avg_price_data)
 conn.commit()
 
-
-
-
-
-
-
-
-
-
-results = cursor.execute("select * from note_agg")
+results = cursor.execute("select name, city, avg_price_min, avg_price_max from note_agg")
 print(str(results.fetchall()))
 
-conn.close()
-
+cursor.close()
