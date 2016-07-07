@@ -8,7 +8,7 @@ timestamp = int(time.time())
 print timestamp
 
 # cursor.execute("drop table note_agg")
-# cursor.execute("create table note_agg (name, city, avg_price_min, avg_price_max)")
+# cursor.execute("create table note_agg (name, city, avg_price_min, avg_price_max, timestamp)")
 
 avg_price = cursor.execute("select DISTINCT name, city, round(avg(replace(price_min, ',', '.')),2), "
                            "round(avg(replace(price_max, ',', '.')),2) from note "
@@ -16,10 +16,11 @@ avg_price = cursor.execute("select DISTINCT name, city, round(avg(replace(price_
                            "group by name, city")
 avg_price_data = avg_price.fetchall()
 
+# print avg_price_data
 # print avg_price_data[1]
 # print avg_price_data[1][0]
 
-stmt = "insert into note_agg(name, city, avg_price_min, avg_price_max) VALUES(?, ?, ?, ?)"
+stmt = "insert into note_agg(name, city, avg_price_min, avg_price_max) VALUES(?, ?, ?, ?, ?)"
 cursor.executemany(stmt, avg_price_data)
 conn.commit()
 
